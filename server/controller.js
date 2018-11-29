@@ -9,7 +9,7 @@ module.exports = {
 		const { imageUrl, name } = req.body;
 		const newFavorite = {
 			imageUrl: imageUrl,
-			name: name,
+			name: name.toLowerCase(),
 			id: id
 		};
 		favorites.push(newFavorite);
@@ -22,7 +22,7 @@ module.exports = {
 		favorites.forEach((card) => {
 			if (card.id === +id) {
 				card.imageUrl = imageUrl;
-				card.name = name;
+				card.name = name.toLowerCase();
 			}
 		});
 		res.status(200).send(favorites);
@@ -34,5 +34,20 @@ module.exports = {
 		});
 
 		res.status(200).send(favorites);
+	},
+	searchOnServer: (req, res) => {
+		const { name } = req.query;
+		let searched = name.toLowerCase();
+		let filteredList = favorites.filter((card) => {
+			console.log(card.name, name);
+			return card.name.includes(searched);
+		});
+		console.log(filteredList);
+
+		if (name) {
+			res.status(200).send(filteredList);
+		} else {
+			res.status(200).send(favorites);
+		}
 	}
 };

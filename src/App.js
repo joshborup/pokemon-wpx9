@@ -9,7 +9,8 @@ class App extends Component {
 			stuff: [],
 			selectedCard: null,
 			selectedName: "",
-			favoritesList: []
+			favoritesList: [],
+			searchTerm: ""
 		};
 		this.getDataFromUrl = this.getDataFromUrl.bind(this);
 		this.postUserCardToTheServer = this.postUserCardToTheServer.bind(this);
@@ -76,6 +77,15 @@ class App extends Component {
 		});
 	}
 
+	search(value) {
+		axios.get(`/api/search?name=${value}`).then((response) => {
+			this.setState({
+				favoritesList: response.data,
+				searchTerm: value
+			});
+		});
+	}
+
 	render() {
 		const { stuff, favoritesList, selectedCard } = this.state;
 
@@ -110,6 +120,18 @@ class App extends Component {
 
 		return (
 			<div className="App">
+				<header>
+					<div>
+						<span>search</span>
+						<input
+							value={this.state.searchTerm}
+							onChange={(e) => {
+								this.search(e.target.value);
+							}}
+						/>
+					</div>
+				</header>
+
 				<div>
 					<div>{myFavorites}</div>
 					<img src={selectedCard} />

@@ -68,8 +68,16 @@ class App extends Component {
 		});
 	}
 
+	deleteCardFromServer(id) {
+		axios.delete(`/api/favorites/${id}`).then((response) => {
+			this.setState({
+				favoritesList: response.data
+			});
+		});
+	}
+
 	render() {
-		const { stuff, favoritesList } = this.state;
+		const { stuff, favoritesList, selectedCard } = this.state;
 
 		const myCards = stuff.length ? (
 			stuff.map((card) => {
@@ -91,7 +99,10 @@ class App extends Component {
 				<span>
 					<img src={card.imageUrl} />
 					<button onClick={() => this.updateFavorite(card.id)}>
-						update with selected
+						Update With Selected
+					</button>
+					<button onClick={() => this.deleteCardFromServer(card.id)}>
+						Delete
 					</button>
 				</span>
 			);
@@ -101,7 +112,7 @@ class App extends Component {
 			<div className="App">
 				<div>
 					<div>{myFavorites}</div>
-					<img src={this.state.selectedCard} />
+					<img src={selectedCard} />
 					<button onClick={() => this.postUserCardToTheServer()}>
 						ADD
 					</button>

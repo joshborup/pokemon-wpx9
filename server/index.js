@@ -10,5 +10,7 @@ app.post("/api/favorites", controller.postToFavorites);
 
 app.put("/api/favorites/:id", controller.updateFavorites);
 
+app.delete("/api/favorites/:id", controller.deleteFromFavorites);
+
 const PORT = 4000;
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));

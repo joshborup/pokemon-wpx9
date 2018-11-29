@@ -26,5 +26,13 @@ module.exports = {
 			}
 		});
 		res.status(200).send(favorites);
+	},
+	deleteFromFavorites: (req, res) => {
+		const { id } = req.params;
+		favorites = favorites.filter((card) => {
+			return card.id !== +id;
+		});
+
+		res.status(200).send(favorites);
 	}
 };

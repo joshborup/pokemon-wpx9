@@ -10,7 +10,8 @@ class App extends Component {
 			selectedCard: null,
 			selectedName: "",
 			favoritesList: [],
-			searchTerm: ""
+			searchTerm: "",
+			toggle: false
 		};
 		this.getDataFromUrl = this.getDataFromUrl.bind(this);
 		this.postUserCardToTheServer = this.postUserCardToTheServer.bind(this);
@@ -93,6 +94,7 @@ class App extends Component {
 			stuff.map((card) => {
 				return (
 					<img
+						key={card.name}
 						onClick={() => {
 							this.setCard(card);
 						}}
@@ -106,23 +108,49 @@ class App extends Component {
 
 		const myFavorites = favoritesList.map((card) => {
 			return (
-				<span>
+				<div key={card.id} className="card">
 					<img src={card.imageUrl} />
 					<button onClick={() => this.updateFavorite(card.id)}>
 						Update With Selected
 					</button>
-					<button onClick={() => this.deleteCardFromServer(card.id)}>
-						Delete
+					<button
+						className="delete"
+						onClick={() => this.deleteCardFromServer(card.id)}>
+						X
 					</button>
-				</span>
+
+					{/* <select
+						onChange={(e) => {
+							let { value } = e.target;
+							if (value === "delete") {
+								this.deleteCardFromServer(card.id);
+							} else if (value === "update") {
+								this.updateFavorite(card.id);
+							}
+						}}>
+						<option value="not selected" />
+						<option value="delete">delete</option>
+						<option value="update">update</option>
+					</select> */}
+				</div>
 			);
 		});
+
+		const style = {
+			color: this.state.toggle ? "red" : "blue"
+		};
 
 		return (
 			<div className="App">
 				<header>
-					<div>
-						<span>search</span>
+					<div className="search-container">
+						<span
+							onClick={() =>
+								this.setState({ toggle: !this.state.toggle })
+							}
+							style={style}>
+							search
+						</span>
 						<input
 							value={this.state.searchTerm}
 							onChange={(e) => {
@@ -130,16 +158,20 @@ class App extends Component {
 							}}
 						/>
 					</div>
+
+					<div className="favorites-container">{myFavorites}</div>
 				</header>
 
-				<div>
-					<div>{myFavorites}</div>
+				<section>
+					<div className="card-collection-container">{myCards}</div>
+				</section>
+
+				<div className="selected-card-container">
 					<img src={selectedCard} />
 					<button onClick={() => this.postUserCardToTheServer()}>
 						ADD
 					</button>
 				</div>
-				{myCards}
 			</div>
 		);
 	}

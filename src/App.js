@@ -1,33 +1,23 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { Switch, NavLink, Route } from "react-router-dom";
+import Favorites from "./components/Favorites";
 import Collection from "./components/Collection";
 import "./App.css";
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			stuff: [],
-			selectedCard: null,
-			selectedName: "",
-
-			toggle: false
-		};
-	}
-
-	componentDidMount() {}
-
 	render() {
-		const { stuff, favoritesList, selectedCard } = this.state;
-
-		const style = {
-			color: this.state.toggle ? "red" : "blue"
-		};
-
 		return (
 			<div className="App">
-				<header />
-				<Collection />
+				<header>
+					<NavLink exact to="/">
+						Home
+					</NavLink>
+					<NavLink to="/favorites">Favorites</NavLink>
+				</header>
+				<Switch>
+					<Route path="/favorites" component={Favorites} />
+					<Route path="/" component={Collection} />
+				</Switch>
 			</div>
 		);
 	}

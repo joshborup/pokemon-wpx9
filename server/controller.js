@@ -42,7 +42,6 @@ module.exports = {
 			console.log(card.name, name);
 			return card.name.includes(searched);
 		});
-		console.log(filteredList);
 
 		if (name) {
 			res.status(200).send(filteredList);
